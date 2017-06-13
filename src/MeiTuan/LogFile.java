@@ -11,28 +11,31 @@ import java.util.*;
 public class LogFile {
     public static class BadLog{
         public int num = 0;
-        public ArrayList<Integer> log = new ArrayList<>();
+        public int dataNum = 0;
+        public boolean[] log;
+        public BadLog(int dataNum){
+            this.dataNum = dataNum;
+            log = new boolean[dataNum];
+        }
         public void put(int data){
-            log.add(data);
+            log[data] = true;
             num++;
         }
         public boolean exist(int smallest){
             boolean result = false;
-            Iterator<Integer> it = log.iterator();
-            int index = 0;
-            while (it.hasNext()){
-                if(it.next() > smallest){
+            for (int i = smallest; i < dataNum; i++) {
+                if(log[i]){
                     result = true;
-                    remove(index);
+                    remove(i);
+                    break;
                 }
-                index++;
             }
             return result;
         }
 
         private void remove(int index){
+            log[index] = false;
             num--;
-            log.set(index,-2);
         }
 
         public int size(){
@@ -46,28 +49,23 @@ public class LogFile {
             int num = 0;
             Map<String,Integer> buyMap = new HashMap<>();
             Map<String,Integer> useMap = new HashMap<>();
-            BadLog unLog = new BadLog();
             num = sc.nextInt();
+            BadLog badLog = new BadLog(num);
             sc.nextLine();
             for (int i = 0; i < num; i++) {
                 String line = sc.nextLine();
                 if(line.charAt(0) == '?'){
-                    unLog.put(i);
+                    badLog.put(i);
                 }else {
                     String substring = line.substring(2);
                     if(line.charAt(0) == 'I'){
                         Integer inputLine = buyMap.get(substring);
                         if( inputLine!= null){
-                            boolean exist = false;
-                            if(unLog.size() >0){
-    //                            存在unlog的情况
-                                if(unLog.exist(inputLine)){
-                                    buyMap.put(substring,i);
-                                    exist = true;
-                                    break;
-                                }
-                            }
-                            if(!exist){
+                            boolean exist = badLog.exist(inputLine);
+                            //存在unlog的情况
+                            if(exist){
+                                buyMap.put(substring,i);
+                            }else {
                                 errorLine = i+1;
                                 break;
                             }
@@ -80,16 +78,13 @@ public class LogFile {
                             useMap.put(substring,i);
     //                        判断未知log
                         }else {
-                            boolean exist = false;
+                            boolean exist =false;
                             Integer lastUse = useMap.get(substring);
                             if(lastUse != null){
-                                if(unLog.exist(lastUse)){
-                                    exist = true;
-                                    break;
-                                }
-                            }else if (unLog.size() > 0){
+                                exist = badLog.exist(lastUse);
+                            }else if (badLog.size() > 0){
                                 exist = true;
-                                unLog.remove(0);
+                                badLog.remove(0);
                             }
 
                             if(!exist){

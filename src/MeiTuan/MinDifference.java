@@ -10,7 +10,7 @@ import java.util.Scanner;
  */
 public class MinDifference {
     public static void main(String[] args) throws FileNotFoundException {
-        Scanner sc = new Scanner(new File("input1"));
+        Scanner sc = new Scanner(new File("input.txt"));
         int n = sc.nextInt();
         int[] seqN = new int[n];
         for (int i = 0; i < n; i++) {
@@ -21,6 +21,15 @@ public class MinDifference {
         for (int i = 0; i < m; i++) {
             seqM[i] = sc.nextInt();
         }
-
+        long min = Long.MAX_VALUE;
+        long temp = 0;
+        for (int i = 0; i <= m-n; i++) {
+            temp = 0;
+            for (int j = 0; j < n; j++) {
+                temp += Math.pow(seqM[i+j]-seqN[j],2);
+            }
+            if(temp < min)min = temp;
+        }
+        System.out.println(min);
     }
 }
