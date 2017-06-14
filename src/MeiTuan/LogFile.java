@@ -46,7 +46,7 @@ public class LogFile {
         Scanner sc = new Scanner(new File("input2"));
         while (sc.hasNextInt()){
             int errorLine = -1;
-            int num = 0;
+            int num;
             Map<String,Integer> buyMap = new HashMap<>();
             Map<String,Integer> useMap = new HashMap<>();
             num = sc.nextInt();
@@ -75,7 +75,6 @@ public class LogFile {
                     }else if(line.charAt(0) == 'O'){
                         if(buyMap.get(substring) != null){
                             buyMap.remove(substring);
-                            useMap.put(substring,i);
     //                        判断未知log
                         }else {
                             boolean exist =false;
@@ -92,6 +91,8 @@ public class LogFile {
                                 break;
                             }
                         }
+                        useMap.put(substring,i);
+
                     }
                 }
             }
