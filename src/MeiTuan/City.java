@@ -9,17 +9,21 @@ import java.util.Stack;
  * Created by luoyu on 2017/6/14 0014.
  */
 public class City {
-    class path{
-        int num;
-        public path(int num) {
-            this.num = num;
-        }
-    }
+    public static int num;
+    public static int[] a;
+    public static int[] b;
+    public static boolean[] exist;
+    public static Stack<Character> path = new Stack<>();
+    public static int loopCity = -1;
+    public static boolean pathExist = false;
+
     public static void main(String[] args) throws FileNotFoundException {
         Scanner sc = new Scanner(new File("input4"));
-        int num = sc.nextInt();
-        int[] a = new int[num];
-        int[] b = new int[num];
+        num = sc.nextInt();
+        a = new int[num];
+        b = new int[num];
+        exist = new boolean[num];
+
         for (int i = 0; i < num; i++) {
             a[i] = sc.nextInt();
         }
@@ -27,30 +31,44 @@ public class City {
             b[i] = sc.nextInt();
         }
 
-        boolean[] exist = new boolean[num];
-        Stack<Integer> path = new Stack<>();
-        Stack<Character> pathSeq = new Stack<>();
+        travel(0);
 
-        path.push(0);
-        int loopCity = -1;
-        boolean pathExist = false;
-        while (!path.empty()){
-            int now = path.peek();
-            if(now == num-1){
-                break;
+        if (loopCity != -1 && pathExist) System.out.println("Infinity!");
+        else if (pathExist) {
+            for (Character character : path) {
+                System.out.print(character);
             }
-        }
-        if(loopCity != -1 && pathExist) System.out.println("Infinity!");
-        else if(pathExist) {
-            for (Character character : pathSeq) {
-                System.out.println(character);
-            }
-        }else System.out.println("No solution!");
+        } else System.out.println("No solution!");
     }
 
-    private void travel(int now,int dest){
-        if(now == dest){
-
+    private static void travel(int now) {
+        if(0 <= now && now <= num-1 ){
+            if(now == num-1){
+                pathExist = true;
+                return;
+            }
+            //loop
+            if(exist[now]){
+                //成环什么都不做，记录成环的位置
+                if(loopCity == -1)loopCity = now;
+            }else {
+                exist[now] = true;
+                //试路径a
+                int aNext = now + a[now];
+                path.push('a');
+                travel(aNext);
+                if(pathExist)return;
+                path.pop();
+                //试路径b
+                int bNext = now + b[now];
+                path.push('b');
+                travel(bNext);
+                if(pathExist)return;
+                path.pop();
+                //路径ab都不行，则退出该点
+                if(now == loopCity)loopCity = -1;
+                exist[now] = false;
+            }
         }
     }
 }
