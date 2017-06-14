@@ -13,7 +13,7 @@ public class City {
     public static int[] a;
     public static int[] b;
     public static boolean[] exist;
-    public static Stack<Character> path = new Stack<>();
+    public static Stack<Character> path;
     public static int loopCity = -1;
     public static boolean pathExist = false;
 
@@ -23,6 +23,7 @@ public class City {
         a = new int[num];
         b = new int[num];
         exist = new boolean[num];
+        path = new Stack<>();
 
         for (int i = 0; i < num; i++) {
             a[i] = sc.nextInt();
