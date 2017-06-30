@@ -13,6 +13,7 @@ public class City {
     public static int[] a;
     public static int[] b;
     public static boolean[] exist;
+    public static boolean[] tried;
     public static Stack<Character> path;
     public static int loopCity = -1;
     public static boolean pathExist = false;
@@ -23,6 +24,7 @@ public class City {
         a = new int[num];
         b = new int[num];
         exist = new boolean[num];
+        tried = new boolean[num];
         path = new Stack<>();
 
         for (int i = 0; i < num; i++) {
@@ -43,7 +45,7 @@ public class City {
     }
 
     private static void travel(int now) {
-        if(0 <= now && now <= num-1 ){
+        if(0 <= now && now <= num-1 && !tried[now]){
             if(now == num-1){
                 pathExist = true;
                 return;
@@ -59,14 +61,15 @@ public class City {
                 path.push('a');
                 travel(aNext);
                 if(pathExist)return;
-                path.pop();
+                if(!path.empty())path.pop();
                 //试路径b
                 int bNext = now + b[now];
                 path.push('b');
                 travel(bNext);
                 if(pathExist)return;
-                path.pop();
+                if(!path.empty())path.pop();
                 //路径ab都不行，则退出该点
+                tried[now] = true;
                 if(now == loopCity)loopCity = -1;
                 exist[now] = false;
             }
