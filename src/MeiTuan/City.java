@@ -45,34 +45,34 @@ public class City {
     }
 
     private static void travel(int now) {
-        if(0 <= now && now <= num-1 && !tried[now]){
-            if(now == num-1){
-                pathExist = true;
-                return;
+        Stack<Integer> systemStack = new Stack<>();
+        systemStack.push(now);
+        do {
+            now = systemStack.peek();
+            if(0 <= now && now <= num-1 ){
+                if(now == num-1){
+                    pathExist = true;
+//                    return;
+                }else if(exist[now]){
+                    //成环什么都不做，记录成环的位置
+                    if(loopCity == -1)loopCity = now;
+                }else {
+                    exist[now] = true;
+                    //试路径a
+                    path.push('a');
+                    systemStack.push(now + a[now]);
+                    if(pathExist)return;
+                    path.pop();
+                    //试路径b
+                    path.push('b');
+                    travel(now + b[now]);
+                    if(pathExist)return;
+                    path.pop();
+                    //路径ab都不行，则退出该点
+                    if(now == loopCity)loopCity = -1;
+                    exist[now] = false;
+                }
             }
-            //loop
-            if(exist[now]){
-                //成环什么都不做，记录成环的位置
-                if(loopCity == -1)loopCity = now;
-            }else {
-                exist[now] = true;
-                //试路径a
-                int aNext = now + a[now];
-                path.push('a');
-                travel(aNext);
-                if(pathExist)return;
-                if(!path.empty())path.pop();
-                //试路径b
-                int bNext = now + b[now];
-                path.push('b');
-                travel(bNext);
-                if(pathExist)return;
-                if(!path.empty())path.pop();
-                //路径ab都不行，则退出该点
-                tried[now] = true;
-                if(now == loopCity)loopCity = -1;
-                exist[now] = false;
-            }
-        }
+        }while (!systemStack.empty());
     }
 }
