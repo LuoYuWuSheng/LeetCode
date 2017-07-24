@@ -7,6 +7,7 @@ import java.util.Set;
 /**
  * Computer user luoyu
  * Created by 张洋 on 7/7/17.
+ * todo 只过了百分之九十，不知道为什么。。。
  */
 public class Warn {
     public static void main(String args[]){
@@ -18,26 +19,25 @@ public class Warn {
                 h[i] = sc.nextInt();
             }
             int result = 0;
-            for(int i = 0;i<num;i++){
-                result+= calc(h,i);
+            if(num >2){
+                for(int i = 0;i<num;i++){
+                    result+= calc(h,i);
+                }
+                System.out.println(result/2);
+            }else if(num>-1){
+                System.out.println(0);
             }
-            System.out.println(result/2);
         }
     }
     public static int calc(int[] h,int in){
         Set<Integer> set = new HashSet();
-        int index = in;
         int length = h.length;
         if(length < 2)return 1;
+        int index = in;
         int hNow = 0;
-        for(int i = 0;i<length-2;i++){
+        for(int i = 0;i<length-1;i++){
             index = (index+1)%length;
-            if(h[index]>h[in]){
-                if(h[index]>=hNow){
-                    set.add(index);
-                    hNow = h[index];
-                }
-            }else {
+            if(h[index]>= hNow && h[in]>=hNow){
                 set.add(index);
                 hNow = h[index];
             }
@@ -45,15 +45,10 @@ public class Warn {
         hNow = 0;
         //todo 粗心忘记恢复初值
         index = in;
-        for(int i = 0;i<length-2;i++){
+        for(int i = 0;i<length-1;i++){
             //todo 循环竟然有问题，向后退直接用取余数的方法不行
             index = (index-1+length)%length;
-            if(h[index]>h[in]){
-                if(h[index]>hNow){
-                    set.add(index);
-                    hNow = h[index];
-                }
-            }else {
+            if(h[index]>= hNow && h[in]>=hNow){
                 set.add(index);
                 hNow = h[index];
             }
