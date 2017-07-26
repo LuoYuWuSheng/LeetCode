@@ -20,21 +20,21 @@ public class AllSeq {
     }
 
     public static void show(int[] data, int index) {
-        if (index == data.length) print(data);
+        if (index == data.length) System.out.println(Arrays.toString(data));
+        //todo 交换却不能使得交换后的在第一的位置，导致后面的排序不是字典序
         for (int i = index; i < data.length; i++) {
-            int temp = data[index];
-            data[index] = data[i];
-            data[i] = temp;
+            swap(data,index,i);
             show(data, index + 1);
+            swap(data,index,i);
 
         }
     }
 
-    public static void print(int[] data) {
-        for (int i = 0; i < data.length; i++) System.out.print(data[i] + " ");
-        System.out.println();
+    public static void swap(int[] in,int a,int b){
+        int temp = in[a];
+        in[a] = in[b];
+        in[b] = temp;
     }
-
 }
 
 class indexOfAllSeq {
