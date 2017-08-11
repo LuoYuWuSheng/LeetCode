@@ -25,8 +25,7 @@ public class AllSeq {
         for (int i = index; i < data.length; i++) {
             swap(data,index,i);
             show(data, index + 1);
-            swap(data,index,i);
-
+//            swap(data,index,i);`
         }
     }
 
