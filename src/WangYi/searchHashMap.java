@@ -9,7 +9,7 @@ public class searchHashMap {
     public static LinkedHashMap<Integer,Integer> map = new LinkedHashMap();
     Integer[] num;
     public static void main(String[] args) {
-        List<Integer> list = new ArrayList<>();
+        List<Integer> list = new ArrayList<Integer>();
         Integer[] num = new Integer[0];
         Scanner scanner = new Scanner(System.in);
         for (int i = 0; i < 5; i++) {
